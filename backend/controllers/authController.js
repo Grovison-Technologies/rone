@@ -24,10 +24,11 @@ exports.loginStaff = async (req, res) => {
       
       const token = generateToken(user._id, user.role);
       
+      const isProduction = process.env.NODE_ENV === 'production' || process.env.RENDER === 'true';
       res.cookie('staff_jwt', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV !== 'development',
-        sameSite: process.env.NODE_ENV !== 'development' ? 'none' : 'strict',
+        secure: isProduction,
+        sameSite: isProduction ? 'none' : 'strict',
         maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
       });
       
@@ -82,10 +83,11 @@ exports.loginCustomer = async (req, res) => {
 
     const token = generateToken(customer._id, 'CUSTOMER');
     
+    const isProduction = process.env.NODE_ENV === 'production' || process.env.RENDER === 'true';
     res.cookie('customer_jwt', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV !== 'development',
-      sameSite: process.env.NODE_ENV !== 'development' ? 'none' : 'strict',
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : 'strict',
       maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
     });
     
@@ -104,11 +106,12 @@ exports.loginCustomer = async (req, res) => {
 // @route   POST /api/auth/logout
 // @access  Public
 exports.logout = (req, res) => {
+  const isProduction = process.env.NODE_ENV === 'production' || process.env.RENDER === 'true';
   const cookieOptions = {
     httpOnly: true,
     expires: new Date(0),
-    secure: process.env.NODE_ENV !== 'development',
-    sameSite: process.env.NODE_ENV !== 'development' ? 'none' : 'strict',
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'strict',
   };
   res.cookie('jwt', '', cookieOptions);
   res.cookie('staff_jwt', '', cookieOptions);
