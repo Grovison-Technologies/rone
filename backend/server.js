@@ -19,8 +19,7 @@ app.use(cors({
   origin: function(origin, callback) {
     callback(null, true);
   },
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization']
+  credentials: true
 }));
 
 const authRoutes = require('./routes/authRoutes');
