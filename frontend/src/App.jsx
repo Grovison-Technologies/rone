@@ -24,7 +24,23 @@ axios.interceptors.request.use(config => {
     const user = userStr && userStr !== 'undefined' ? JSON.parse(userStr) : null;
     const customer = custStr && custStr !== 'undefined' ? JSON.parse(custStr) : null;
     
-    const token = user?.token || customer?.token;
+    let token = null;
+    
+    // Check if the request is for a customer-specific endpoint
+    const isCustomerRoute = config.url && (
+      config.url.includes('/api/customers/me') ||
+      config.url.includes('/api/sessions/my-active') ||
+      config.url.includes('/api/stations/customer')
+    );
+
+    if (isCustomerRoute && customer?.token) {
+      token = customer.token;
+    } else if (user?.token) {
+      token = user.token;
+    } else if (customer?.token) {
+      token = customer.token; // fallback
+    }
+
     if (token) {
       if (config.headers.set) {
         config.headers.set('Authorization', `Bearer ${token}`);

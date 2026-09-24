@@ -40,14 +40,14 @@ const Login = ({ type = 'staff' }) => {
         
         {error && <div style={{ backgroundColor: 'rgba(255,0,0,0.1)', color: 'var(--status-warning)', padding: '0.75rem', borderRadius: '4px', marginBottom: '1rem', border: '1px solid var(--status-warning)' }}>{error}</div>}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="off">
           {type === 'staff' ? (
             <>
               <div className="input-group">
-                <input type="email" required placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+                <input type="email" name="staff_email" id="staff_email" required placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} autoComplete="new-password" />
               </div>
               <div className="input-group">
-                <input type="password" required placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+                <input type="password" name="staff_pwd" id="staff_pwd" required placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} autoComplete="new-password" />
               </div>
             </>
           ) : (
