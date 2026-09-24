@@ -14,7 +14,8 @@ import Landing from './pages/Landing';
 import './index.css';
 
 // Set default base URL and credentials for all axios requests
-axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+const isProduction = import.meta.env.MODE === 'production';
+axios.defaults.baseURL = isProduction ? 'https://rone-backend-fa5b.onrender.com' : 'http://localhost:5001';
 axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use((config) => {
