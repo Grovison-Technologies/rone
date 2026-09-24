@@ -16,7 +16,10 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: [process.env.CLIENT_URL || 'http://localhost:5173', 'http://localhost:5173'],
+  origin: function (origin, callback) {
+    // Allow any origin for maximum compatibility across Hostinger and Render
+    callback(null, true);
+  },
   credentials: true
 }));
 
