@@ -68,10 +68,15 @@ const Landing = () => {
           />
         </div>
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-          <div className="landing-logo animate-fade-in" style={{ animationDelay: '0.2s', opacity: 0 }}>R.ONE</div>
-          <div className="landing-tagline animate-fade-in" style={{ animationDelay: '0.4s', opacity: 0, textShadow: '0 5px 15px rgba(0,0,0,0.8)' }}>
+          <h1 className="landing-logo animate-fade-in" style={{ animationDelay: '0.2s', opacity: 0, margin: 0 }}>
+            R.ONE
+            <span style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', border: 0 }}>
+              Gaming Zone in Housefed Complex, Banur, Punjab. Premium PlayStation 5 and PS4 Esports.
+            </span>
+          </h1>
+          <h2 className="landing-tagline animate-fade-in" style={{ animationDelay: '0.4s', opacity: 0, textShadow: '0 5px 15px rgba(0,0,0,0.8)', fontWeight: 'normal' }}>
             PLAY <span style={{ color: '#FF003C' }}>▶</span> CONNECT <span style={{ color: '#FF003C' }}>▶</span> LEVEL UP
-          </div>
+          </h2>
           <div className="animate-fade-in" style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', justifyContent: 'center', animationDelay: '0.6s', opacity: 0 }}>
             <button className="glow-btn" onClick={() => navigate('/customer-login')} style={{ padding: '1.25rem 3.5rem', fontSize: '1.25rem' }}>
               PLAYER PORTAL
