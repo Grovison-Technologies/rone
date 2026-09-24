@@ -17,43 +17,6 @@ import './index.css';
 axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 axios.defaults.withCredentials = true;
 
-axios.interceptors.request.use(config => {
-  try {
-    const userStr = localStorage.getItem('rOneUser');
-    const custStr = localStorage.getItem('rOneCustomer');
-    const user = userStr && userStr !== 'undefined' ? JSON.parse(userStr) : null;
-    const customer = custStr && custStr !== 'undefined' ? JSON.parse(custStr) : null;
-    
-    let token = null;
-    
-    // Check if the request is for a customer-specific endpoint
-    const isCustomerRoute = config.url && (
-      config.url.includes('/api/customers/me') ||
-      config.url.includes('/api/sessions/my-active') ||
-      config.url.includes('/api/stations/customer')
-    );
-
-    if (isCustomerRoute && customer?.token) {
-      token = customer.token;
-    } else if (user?.token) {
-      token = user.token;
-    } else if (customer?.token) {
-      token = customer.token; // fallback
-    }
-
-    if (token) {
-      if (config.headers.set) {
-        config.headers.set('Authorization', `Bearer ${token}`);
-      } else {
-        config.headers['Authorization'] = `Bearer ${token}`;
-      }
-    }
-  } catch (err) {
-    console.error('Error parsing auth token', err);
-  }
-  return config;
-});
-
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const location = useLocation();
   const { logout, user } = useContext(AuthContext);

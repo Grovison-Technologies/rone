@@ -3,8 +3,8 @@ import { AuthContext } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Login = ({ type = 'staff' }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('admin@rone.com');
+  const [password, setPassword] = useState('password123');
   const [mobile, setMobile] = useState('');
   const [pin, setPin] = useState('');
   const [error, setError] = useState('');
@@ -40,14 +40,14 @@ const Login = ({ type = 'staff' }) => {
         
         {error && <div style={{ backgroundColor: 'rgba(255,0,0,0.1)', color: 'var(--status-warning)', padding: '0.75rem', borderRadius: '4px', marginBottom: '1rem', border: '1px solid var(--status-warning)' }}>{error}</div>}
 
-        <form onSubmit={handleSubmit} autoComplete="off">
+        <form onSubmit={handleSubmit}>
           {type === 'staff' ? (
             <>
               <div className="input-group">
-                <input type="email" name="staff_email" id="staff_email" required placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} autoComplete="new-password" />
+                <input type="email" required placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
               </div>
               <div className="input-group">
-                <input type="password" name="staff_pwd" id="staff_pwd" required placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} autoComplete="new-password" />
+                <input type="password" required placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
               </div>
             </>
           ) : (

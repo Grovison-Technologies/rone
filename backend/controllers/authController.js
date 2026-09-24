@@ -27,7 +27,7 @@ exports.loginStaff = async (req, res) => {
       res.cookie('staff_jwt', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== 'development',
-        sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none',
+        sameSite: 'strict',
         maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
       });
       
@@ -36,8 +36,7 @@ exports.loginStaff = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        permissions: user.permissions,
-        token
+        permissions: user.permissions
       });
     } else {
       res.status(401).json({ message: 'Invalid email or password' });
@@ -86,7 +85,7 @@ exports.loginCustomer = async (req, res) => {
     res.cookie('customer_jwt', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV !== 'development',
-      sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none',
+      sameSite: 'strict',
       maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
     });
     
@@ -94,8 +93,7 @@ exports.loginCustomer = async (req, res) => {
       _id: customer._id,
       name: customer.name,
       rOneId: customer.rOneId,
-      mobile: customer.mobile,
-      token
+      mobile: customer.mobile
     });
   } catch (error) {
     res.status(500).json({ message: 'Server Error', error: error.message });
@@ -106,14 +104,8 @@ exports.loginCustomer = async (req, res) => {
 // @route   POST /api/auth/logout
 // @access  Public
 exports.logout = (req, res) => {
-  const cookieOptions = {
-    httpOnly: true,
-    expires: new Date(0),
-    secure: process.env.NODE_ENV !== 'development',
-    sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none'
-  };
-  res.cookie('jwt', '', cookieOptions);
-  res.cookie('staff_jwt', '', cookieOptions);
-  res.cookie('customer_jwt', '', cookieOptions);
+  res.cookie('jwt', '', { httpOnly: true, expires: new Date(0) });
+  res.cookie('staff_jwt', '', { httpOnly: true, expires: new Date(0) });
+  res.cookie('customer_jwt', '', { httpOnly: true, expires: new Date(0) });
   res.status(200).json({ message: 'Logged out successfully' });
 };

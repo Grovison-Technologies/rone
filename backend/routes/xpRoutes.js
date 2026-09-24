@@ -4,7 +4,7 @@ const { getXPPacks, createXPPack, updateXPPack } = require('../controllers/xpCon
 const { protect, staff, owner } = require('../middleware/authMiddleware');
 
 router.route('/')
-  .get(getXPPacks)
+  .get(protect, staff, getXPPacks)
   .post(protect, owner, createXPPack);
 
 router.route('/:id')

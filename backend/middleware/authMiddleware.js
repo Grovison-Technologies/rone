@@ -3,12 +3,7 @@ const User = require('../models/User');
 const Customer = require('../models/Customer');
 
 const protect = async (req, res, next) => {
-  let token;
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    token = req.headers.authorization.split(' ')[1];
-  } else {
-    token = req.cookies.staff_jwt || req.cookies.jwt;
-  }
+  let token = req.cookies.staff_jwt || req.cookies.jwt; // fallback to jwt for backwards compatibility
 
   if (token) {
     try {
@@ -29,12 +24,7 @@ const protect = async (req, res, next) => {
 };
 
 const protectCustomer = async (req, res, next) => {
-  let token;
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    token = req.headers.authorization.split(' ')[1];
-  } else {
-    token = req.cookies.customer_jwt;
-  }
+  let token = req.cookies.customer_jwt;
 
   if (token) {
     try {
