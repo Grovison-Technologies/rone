@@ -16,10 +16,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: function(origin, callback) {
-    // Dynamically allow any origin (Hostinger, localhost, etc)
-    callback(null, true);
-  },
+  origin: ['https://playrone.in', 'https://www.playrone.in', 'http://localhost:5173'],
   credentials: true
 }));
 
@@ -51,7 +48,7 @@ const PORT = process.env.PORT || 5000;
 // Self-ping mechanism to keep Render free tier awake
 const https = require('https');
 setInterval(() => {
-  const backendUrl = process.env.BACKEND_URL;
+  const backendUrl = 'https://rone-backend-fa5b.onrender.com';
   if (backendUrl) {
     console.log(`Pinging ${backendUrl} to keep server awake...`);
     https.get(backendUrl, (resp) => {
