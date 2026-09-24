@@ -79,16 +79,24 @@ const OwnerOverview = () => {
   const [error, setError] = useState('');
   const [isOffPeak, setIsOffPeak] = useState(false);
 
-  const fetchOverviewData = async () => {
+  const fetchOverviewData = () => {
     try {
-      const [sumRes, custRes, sysRes] = await Promise.all([
-        axios.get('/api/reports/summary'),
-        axios.get('/api/customers'),
-        axios.get('/api/system')
-      ]);
-      setSummary(sumRes.data);
-      setCustomers(custRes.data);
-      setIsOffPeak(sysRes.data?.isOffPeakModeActive || false);
+      const getLocalBoundary = (d, isEnd) => {
+        const date = new Date(d);
+        if (isEnd) date.setHours(23, 59, 59, 999);
+        else date.setHours(0, 0, 0, 0);
+        return date.toISOString();
+      };
+      
+      const params = { 
+        startDate: getLocalBoundary(new Date(), false), 
+        endDate: getLocalBoundary(new Date(), true) 
+      };
+
+      // Fetch asynchronously without blocking each other to maximize speed
+      axios.get('/api/reports/summary', { params }).then(res => setSummary(res.data)).catch(console.error);
+      axios.get('/api/system').then(res => setIsOffPeak(res.data?.isOffPeakModeActive || false)).catch(console.error);
+      axios.get('/api/customers').then(res => setCustomers(res.data)).catch(console.error);
     } catch (err) {
       console.error(err);
     }

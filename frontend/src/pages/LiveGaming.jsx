@@ -16,14 +16,9 @@ const LiveGaming = () => {
   
   const fetchData = async () => {
     try {
-      const [stRes, sessRes, custRes] = await Promise.all([
-        axios.get('/api/stations'),
-        axios.get('/api/sessions/active'),
-        axios.get('/api/customers')
-      ]);
-      setStations(stRes.data);
-      setActiveSessions(sessRes.data);
-      setCustomers(custRes.data);
+      axios.get('/api/stations').then(res => setStations(res.data)).catch(console.error);
+      axios.get('/api/sessions/active').then(res => setActiveSessions(res.data)).catch(console.error);
+      axios.get('/api/customers').then(res => setCustomers(res.data)).catch(console.error);
     } catch (err) {
       console.error(err);
       setError('Failed to fetch live gaming data.');
