@@ -26,7 +26,11 @@ axios.interceptors.request.use(config => {
     
     const token = user?.token || customer?.token;
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      if (config.headers.set) {
+        config.headers.set('Authorization', `Bearer ${token}`);
+      } else {
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
     }
   } catch (err) {
     console.error('Error parsing auth token', err);
