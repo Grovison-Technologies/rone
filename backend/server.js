@@ -45,6 +45,21 @@ app.use('/api/system', systemRoutes);
 
 const PORT = process.env.PORT || 5000;
 
+// Self-ping mechanism to keep Render free tier awake
+const https = require('https');
+setInterval(() => {
+  const backendUrl = process.env.BACKEND_URL;
+  if (backendUrl) {
+    console.log(`Pinging ${backendUrl} to keep server awake...`);
+    https.get(backendUrl, (resp) => {
+      if (resp.statusCode === 200) console.log('Self-ping successful');
+      else console.log('Self-ping failed with status:', resp.statusCode);
+    }).on("error", (err) => {
+      console.log("Self-ping Error: " + err.message);
+    });
+  }
+}, 14 * 60 * 1000); // 14 minutes
+
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
