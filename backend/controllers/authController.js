@@ -27,7 +27,7 @@ exports.loginStaff = async (req, res) => {
       res.cookie('staff_jwt', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== 'development',
-        sameSite: 'strict',
+        sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none',
         maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
       });
       
@@ -85,7 +85,7 @@ exports.loginCustomer = async (req, res) => {
     res.cookie('customer_jwt', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV !== 'development',
-      sameSite: 'strict',
+      sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none',
       maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
     });
     
@@ -104,8 +104,14 @@ exports.loginCustomer = async (req, res) => {
 // @route   POST /api/auth/logout
 // @access  Public
 exports.logout = (req, res) => {
-  res.cookie('jwt', '', { httpOnly: true, expires: new Date(0) });
-  res.cookie('staff_jwt', '', { httpOnly: true, expires: new Date(0) });
-  res.cookie('customer_jwt', '', { httpOnly: true, expires: new Date(0) });
+  const cookieOptions = {
+    httpOnly: true,
+    expires: new Date(0),
+    secure: process.env.NODE_ENV !== 'development',
+    sameSite: process.env.NODE_ENV === 'development' ? 'strict' : 'none'
+  };
+  res.cookie('jwt', '', cookieOptions);
+  res.cookie('staff_jwt', '', cookieOptions);
+  res.cookie('customer_jwt', '', cookieOptions);
   res.status(200).json({ message: 'Logged out successfully' });
 };
