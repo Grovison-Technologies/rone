@@ -14,8 +14,9 @@ const generateToken = (id, role) => {
 exports.loginStaff = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const lowerEmail = email.toLowerCase();
     
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: lowerEmail });
     
     if (user && (await user.matchPassword(password))) {
       if (user.status !== 'ACTIVE') {
