@@ -16,7 +16,8 @@ import './index.css';
 // Set default base URL and credentials for all axios requests
 const isProduction = import.meta.env.MODE === 'production';
 axios.defaults.baseURL = isProduction ? 'https://rone-backend-fa5b.onrender.com' : 'http://localhost:5001';
-axios.defaults.withCredentials = true;
+// Credentials disabled to bypass iOS Intelligent Tracking Prevention (we use Bearer tokens now)
+axios.defaults.withCredentials = false;
 
 axios.interceptors.request.use((config) => {
   try {
