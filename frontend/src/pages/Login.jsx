@@ -3,8 +3,8 @@ import { AuthContext } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Login = ({ type = 'staff' }) => {
-  const [email, setEmail] = useState('admin@rone.com');
-  const [password, setPassword] = useState('password123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [mobile, setMobile] = useState('');
   const [pin, setPin] = useState('');
   const [error, setError] = useState('');

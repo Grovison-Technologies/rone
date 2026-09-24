@@ -18,11 +18,18 @@ axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5001'
 axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use(config => {
-  const user = JSON.parse(localStorage.getItem('rOneUser'));
-  const customer = JSON.parse(localStorage.getItem('rOneCustomer'));
-  const token = user?.token || customer?.token;
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  try {
+    const userStr = localStorage.getItem('rOneUser');
+    const custStr = localStorage.getItem('rOneCustomer');
+    const user = userStr && userStr !== 'undefined' ? JSON.parse(userStr) : null;
+    const customer = custStr && custStr !== 'undefined' ? JSON.parse(custStr) : null;
+    
+    const token = user?.token || customer?.token;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  } catch (err) {
+    console.error('Error parsing auth token', err);
   }
   return config;
 });
