@@ -17,6 +17,18 @@ import './index.css';
 axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 axios.defaults.withCredentials = true;
 
+axios.interceptors.request.use((config) => {
+  try {
+    const user = JSON.parse(localStorage.getItem('rOneUser'));
+    const customer = JSON.parse(localStorage.getItem('rOneCustomer'));
+    const token = user?.token || customer?.token;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  } catch(e) {}
+  return config;
+});
+
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const location = useLocation();
   const { logout, user } = useContext(AuthContext);

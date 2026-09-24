@@ -37,7 +37,8 @@ exports.loginStaff = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        permissions: user.permissions
+        permissions: user.permissions,
+        token: token
       });
     } else {
       res.status(401).json({ message: 'Invalid email or password' });
@@ -95,7 +96,8 @@ exports.loginCustomer = async (req, res) => {
       _id: customer._id,
       name: customer.name,
       rOneId: customer.rOneId,
-      mobile: customer.mobile
+      mobile: customer.mobile,
+      token: token
     });
   } catch (error) {
     res.status(500).json({ message: 'Server Error', error: error.message });
