@@ -17,7 +17,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
   origin: ['https://playrone.in', 'https://www.playrone.in', 'http://localhost:5173'],
-  credentials: true
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 const authRoutes = require('./routes/authRoutes');
