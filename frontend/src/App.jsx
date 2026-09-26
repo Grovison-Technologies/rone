@@ -25,9 +25,15 @@ axios.interceptors.request.use((config) => {
     const customer = JSON.parse(localStorage.getItem('rOneCustomer'));
     const token = user?.token || customer?.token;
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      if (config.headers && config.headers.set) {
+        config.headers.set('Authorization', `Bearer ${token}`);
+      } else {
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
     }
-  } catch(e) {}
+  } catch(e) {
+    console.error("LocalStorage/Auth Interceptor Error:", e);
+  }
   return config;
 });
 
@@ -86,6 +92,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 };
 
 const OwnerOverview = () => {
+  const { logout } = useContext(AuthContext);
   const [summary, setSummary] = useState(null);
   const [showAddXPModal, setShowAddXPModal] = useState(false);
   const [customers, setCustomers] = useState([]);
@@ -108,7 +115,7 @@ const OwnerOverview = () => {
       };
 
       // Fetch asynchronously without blocking each other to maximize speed
-      axios.get('/api/reports/summary', { params }).then(res => setSummary(res.data)).catch(console.error);
+      axios.get('/api/reports/summary', { params }).then(res => setSummary(res.data)).catch(err => { if(err.response?.status === 401) logout('staff'); });
       axios.get('/api/system').then(res => setIsOffPeak(res.data?.isOffPeakModeActive || false)).catch(console.error);
       axios.get('/api/customers').then(res => setCustomers(res.data)).catch(console.error);
     } catch (err) {

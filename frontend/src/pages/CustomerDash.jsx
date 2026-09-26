@@ -27,7 +27,11 @@ const CustomerDash = () => {
       setStations(stationRes.data);
     } catch (err) {
       console.error(err);
-      setError('Failed to load profile.');
+      if (err.response && err.response.status === 401) {
+        logout('customer');
+      } else {
+        setError('Failed to load profile.');
+      }
     } finally {
       setLoading(false);
     }
